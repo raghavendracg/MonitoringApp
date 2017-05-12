@@ -21,7 +21,7 @@
         buckets: Bucket2[];
     }
 
-    interface Bucket {
+   export interface Bucket {
         key: string;
         doc_count: number;
         responsecodes: Responsecodes;

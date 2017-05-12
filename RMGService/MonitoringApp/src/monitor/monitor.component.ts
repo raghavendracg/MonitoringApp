@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { Router } from '@angular/router';
 import { Http, Response, Headers } from '@angular/http';
 import 'rxjs/add/operator/map';
@@ -40,6 +40,10 @@ export class MonitorComponent implements OnInit {
       error => this.handleError(error)
     );
   }
+
+  ngOnChanges(changes: SimpleChanges) {
+    
+    }
 
   changeInSelect() {
     this._monitorService.Params = this.param;
