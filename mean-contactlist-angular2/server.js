@@ -27,7 +27,7 @@ mongodb.MongoClient.connect(process.env.MONGODB_URI, function (err, database) {
   console.log("Database connection ready");
 
   // Initialize the app.
-  var server = app.listen(process.env.PORT || 8080, function () {
+  var server = app.listen(process.env.PORT || 9111, function () {
     var port = server.address().port;
     console.log("App now running on port", port);
   });
@@ -55,7 +55,7 @@ app.get("/api/contacts", function(req, res) {
   });
 });
 
-app.post("/api/contacts", function(req, res) {
+/*app.post("/api/contacts", function(req, res) {
   var newContact = req.body;
 
   if (!req.body.name) {
@@ -69,7 +69,7 @@ app.post("/api/contacts", function(req, res) {
       res.status(201).json(doc.ops[0]);
     }
   });
-});
+});*/
 
 /*  "/api/contacts/:id"
  *    GET: find contact by id
@@ -77,7 +77,7 @@ app.post("/api/contacts", function(req, res) {
  *    DELETE: deletes contact by id
  */
 
-app.get("/api/contacts/:id", function(req, res) {
+/*app.get("/api/contacts/:id", function(req, res) {
   db.collection(CONTACTS_COLLECTION).findOne({ _id: new ObjectID(req.params.id) }, function(err, doc) {
     if (err) {
       handleError(res, err.message, "Failed to get contact");
@@ -109,4 +109,4 @@ app.delete("/api/contacts/:id", function(req, res) {
       res.status(200).json(req.params.id);
     }
   });
-});
+});*/
