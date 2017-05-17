@@ -40,7 +40,8 @@ export class MonitorComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.serviceCall();    
+    this.serviceCall();
+    this.getFormattedResult();    
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -50,7 +51,8 @@ export class MonitorComponent implements OnInit {
   }
 
   changeInSelect() {
-   this.serviceCall();   
+   this.serviceCall();
+   this.getFormattedResult();
   }
 
   getFormattedResult() {
@@ -91,12 +93,10 @@ export class MonitorComponent implements OnInit {
    }
   }
 
-  serviceCall() {    
-    this._monitorService.getmonitoringData(this.param).subscribe(
-      data => {
-        console.log(this._monitorModel);
-        this.getFormattedResult();
-         this._monitorModel = data;},
+  serviceCall() { 
+    this._monitorService.Params = this.param;   
+    this._monitorService.getmonitoringData().subscribe(
+      data => {console.log(this._monitorModel); this._monitorModel = data;},
       error => this.handleError(error)
     );
   }
@@ -104,5 +104,10 @@ export class MonitorComponent implements OnInit {
   private handleError(error: Response) {
     return Observable.throw(error.json().error || 'Server error');
   }
+
+  /*logout() {
+    localStorage.removeItem('id_token');
+    this.router.navigate(['login']);
+  }*/
 }
 

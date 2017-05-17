@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { Http } from '@angular/http';
+import { contentHeaders } from '../common/headers';
 
 @Component({
   selector: 'app-login',
@@ -12,18 +13,15 @@ export class LoginComponent {
   }
 
   login(event, username, password) {
-    event.preventDefault();    
+    event.preventDefault();
     let body = JSON.stringify({ username, password });
-
-    this.http.post('http://localhost:8080/login', body)
+    this.http.post('http://localhost:8765/login', body , {headers : contentHeaders})
       .subscribe(
         response => {
-         this.router.navigate(['monitor']);
+           localStorage.setItem('token', response.json().token);
+           this.router.navigate(['monitor']);
         },
-        error => {
-         console.log(error.text());
-         this.router.navigate(['monitor']);
-        }
-      );
-  }  
-}
+        error => { alert( error.json().message ); } );
+      }
+    }
+

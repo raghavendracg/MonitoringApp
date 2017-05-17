@@ -9,25 +9,25 @@ import {MonitorModel} from '../model/MonitorModel';
 import { contentHeaders } from '../common/headers';
 
 @Injectable()
-export class MonitorService {   
+export class MonitorService {
   private endpoint : string;
+  private params : string;
   constructor(private _http: Http) {
-      this.endpoint = 'http://localhost:8080/api/report';
-      
+      this.endpoint = 'http://localhost:8765/api/v1/report';
+      this.params = null;
   }
- /*public getmonitoringData = (): Observable<MonitorModel> => {
-      this.headers = new Headers();
-      this.headers.append('Content-Type', 'application/json');
-      this.headers.append('Accept', 'application/json');
-      return this._http.post(this.endpoint, this.params, {headers : this.headers}).
-      map(res => res.json());
-  }*/
- public  getmonitoringData(param) {
-    return Observable.interval(2000).switchMap(() => {
+  public  getmonitoringData() {
+      return this._http.post(this.endpoint, this.params, {headers : contentHeaders})
+                  .map(res => res.json());
+    /*return Observable.interval(2000).switchMap(() => {
         return this._http.post(this.endpoint, param, { headers: contentHeaders })
         .map(response => <MonitorModel> response.json());
-    }).takeWhile(data => data === null);
+    }).takeWhile(data => data === null);*/
  }
- 
+
+  public set Params(value : string)
+  {
+      this.params = value;
+  }
 }
 
