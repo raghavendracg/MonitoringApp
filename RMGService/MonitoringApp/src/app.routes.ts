@@ -1,8 +1,11 @@
-import { Routes } from '@angular/router';
+import { NgModule } from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
 import { MonitorComponent } from './monitor/monitor.component';
+import { LoginComponent } from './login/login.component';
 
 export const routes: Routes = [
-  { path: '', component: MonitorComponent },
-  { path: 'monitor', component: MonitorComponent },
-  { path: '**', component: MonitorComponent },
+  { path: '', component: LoginComponent },
+  { path: 'login', component: LoginComponent },
+   { path: 'monitor', component: MonitorComponent },
+  { path: '**', component: LoginComponent },
   ];

@@ -39,7 +39,7 @@
               </div> 
               <div class="panel-footer">
                 <span>{{bucket.doc_count}}</span> 
-                 <div *ngFor="let buck of bucket.responsecodes.buckets;">
+                 <div *ngFor="let buck of bucket.responsecodes.buckets">
                    <label [ngClass]="(buck.key == 200)? 'label label-success': 'label label-danger'">count: {{buck.doc_count}}</label>
                  </div>               
                 <div class="clearfix"></div>
@@ -50,17 +50,17 @@
     </div>
   </div>
   
-  <div *ngIf="_monitorModel != undefined">
+  <div>
     <div class="row form-group">
       <div class="col-lg-6 col-md-12">
         <div class="Panel panel-primary"> 
           <div class="panel-heading">
             <div class="row">
-              <div class="col-xs-6 text center"> Success Count </div>
+              <div class="col-xs-6 text center"> Success Chart </div>
             </div>
           </div> 
           <div class="panel-footer">
-            <app-chart [bucketCollection]="_monitorModel.aggregations.words.buckets"></app-chart>                           
+            <app-chart [bucketCollection]="successData"></app-chart>                           
               <div class="clearfix"></div>
           </div>
         </div>
@@ -69,15 +69,15 @@
         <div class="Panel panel-primary"> 
           <div class="panel-heading">
             <div class="row">
-              <div class="col-xs-6 text center"> Failure Count </div>
+              <div class="col-xs-6 text center"> Failure Chart </div>
             </div>
           </div> 
           <div class="panel-footer">
-            <app-chart></app-chart>                           
+            <app-chart [bucketCollection]="failedDated"></app-chart>                           
               <div class="clearfix"></div>
           </div>
         </div>
-      </div>       
+      </div>     
     </div>   
   </div>
 

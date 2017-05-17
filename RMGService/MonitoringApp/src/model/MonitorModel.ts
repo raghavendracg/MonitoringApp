@@ -25,7 +25,7 @@
         key: string;
         doc_count: number;
         responsecodes: Responsecodes;
-    }
+    }  
 
     interface Words {
         doc_count_error_upper_bound: number;
