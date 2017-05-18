@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { Http, Response, Headers } from '@angular/http';
 import 'rxjs/add/operator/map';
 import { Observable } from 'rxjs/Observable';
+import { Subscription } from 'rxjs/Subscription';
 
 import {MonitorService} from '../service/monitor.service';
 import {MonitorModel, Bucket2} from '../model/MonitorModel';
@@ -16,7 +17,7 @@ import {ResponseCollection} from '../model/FormattedModel';
   styleUrls: ['./src/monitor/monitor.component.css']
 })
 
-export class MonitorComponent implements OnInit {
+export class MonitorComponent implements OnInit, OnDestroy  {
  results : ResponseCollection[];
  successData : Bucket2[];
  failedDated : Bucket2[];
@@ -29,9 +30,11 @@ export class MonitorComponent implements OnInit {
      new MasterDataModel('1 Day', '{"days":"1"}'),
      new MasterDataModel('10 Days', '{"days":"10"}')
   ];
+  private subscription: Subscription = new Subscription();
   private _monitorModel : MonitorModel;
   //passing real time data.
   private param : string;
+  private errorMessage : any;
   constructor(private _monitorService: MonitorService) {
     this.param = '{"days":"10"}';
     this.results = [];
@@ -39,43 +42,42 @@ export class MonitorComponent implements OnInit {
     this.failedDated = [];
   }
 
-  ngOnInit() {
-    this.serviceCall();
-    this.getFormattedResult();    
+  ngOnInit(): void {
+    this.subscription.add(this.serviceCall());
   }
 
-  ngOnChanges(changes: SimpleChanges) {
-    if (changes['this._monitorModel']) {
-      this.getFormattedResult();
-    }    
-  }
-
+  ngOnChanges(changes: SimpleChanges) { }
+  
   changeInSelect() {
    this.serviceCall();
-   this.getFormattedResult();
+  // this.getFormattedResult();
   }
 
-  getFormattedResult() {
-    if (this._monitorModel !== undefined) {
+  getFormattedResult(model: MonitorModel) {
+    if (model !== undefined) {
      this.results = [];
      this.successData = [];
      this.failedDated = [];
+     let counter = 0;
+   
 
-    for (let code = 0; code < this._monitorModel.aggregations.words.buckets.length; code++) {
-      if (this._monitorModel.aggregations.words.buckets[code].responsecodes.buckets.length === 1){
-        this.results[code] = <ResponseCollection> {
-          name: this._monitorModel.aggregations.words.buckets[code].key,
-          status:  this._monitorModel.aggregations.words.buckets[code].responsecodes.buckets[0].key,
-          count: this._monitorModel.aggregations.words.buckets[code].responsecodes.buckets[0].doc_count
+    for (let code = 0; code < model.aggregations.words.buckets.length; code++) {
+      if (model.aggregations.words.buckets[code].responsecodes.buckets.length === 1) {
+        this.results[counter] = <ResponseCollection> {
+          name: model.aggregations.words.buckets[code].key,
+          status:  model.aggregations.words.buckets[code].responsecodes.buckets[0].key,
+          count: model.aggregations.words.buckets[code].responsecodes.buckets[0].doc_count
         };
+        counter++;
       }
       else {
-        for (let x = 0; x < this._monitorModel.aggregations.words.buckets[code].responsecodes.buckets.length; x++) {
-          this.results[code + x] = <ResponseCollection> {
-           name: this._monitorModel.aggregations.words.buckets[code].key,
-           status:  this._monitorModel.aggregations.words.buckets[code].responsecodes.buckets[x].key,
-           count: this._monitorModel.aggregations.words.buckets[code].responsecodes.buckets[x].doc_count
+        for (let x = 0; x < model.aggregations.words.buckets[code].responsecodes.buckets.length; x++) {
+           this.results[counter] = <ResponseCollection> {
+           name: model.aggregations.words.buckets[code].key,
+           status:  model.aggregations.words.buckets[code].responsecodes.buckets[x].key,
+           count: model.aggregations.words.buckets[code].responsecodes.buckets[x].doc_count
           };
+          counter++;
         }
       }
     }
@@ -88,21 +90,20 @@ export class MonitorComponent implements OnInit {
         this.failedDated.push (<Bucket2> {key: res.name , doc_count: res.count});
       }
     }
-    console.log ('successResult*=>', this.successData);
-    console.log ('failedResult*=>', this.failedDated);
-   }
   }
+}
 
-  serviceCall() { 
-    this._monitorService.Params = this.param;   
-    this._monitorService.getmonitoringData().subscribe(
-      data => {console.log(this._monitorModel); this._monitorModel = data;},
-      error => this.handleError(error)
-    );
-  }
+  serviceCall() {
+    this._monitorService.getmonitoringData(this.param).subscribe(model => {
+      console.log(model);
+      this.getFormattedResult(model);
+      this._monitorModel = model;
+    },
+      error => this.errorMessage = error);
+    }
 
-  private handleError(error: Response) {
-    return Observable.throw(error.json().error || 'Server error');
+  public ngOnDestroy(): void {
+    this.subscription.unsubscribe();
   }
 
   /*logout() {
