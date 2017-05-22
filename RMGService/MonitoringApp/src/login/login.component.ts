@@ -1,27 +1,41 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { Http } from '@angular/http';
-import { contentHeaders } from '../common/headers';
+import { AuthenticationService } from '../service/index';
 
 @Component({
   selector: 'app-login',
   templateUrl: './src/login/login.component.html',
-  styleUrls: [ './src/login/login.component.css' ]
+  styleUrls: [ './src/login/login.component.css' ],
+  providers: [AuthenticationService]
 })
-export class LoginComponent {
-  constructor(public router: Router, public http: Http) {
-  }
 
-  login(event, username, password) {
-    event.preventDefault();
-    let body = JSON.stringify({ username, password });
-    this.http.post('http://localhost:8765/login', body , {headers : contentHeaders})
-      .subscribe(
-        response => {
-           localStorage.setItem('token', response.json().token);
-           this.router.navigate(['monitor']);
-        },
-        error => { alert( error.json().message ); } );
-      }
+export class LoginComponent implements OnInit {
+    model: any = {};
+    loading = false;
+    error = '';
+
+    constructor(
+        private router: Router,
+        private authenticationService: AuthenticationService) { }
+
+    ngOnInit() {
+        // reset login status
+        this.authenticationService.logout();
     }
+
+    login() {
+        this.loading = true;
+        this.authenticationService.login(this.model.username, this.model.password)
+            .subscribe(result => {
+                if (result === true) {
+                    this.router.navigate(['monitor']);
+                } else {                     
+                    this.error = 'Username or password is incorrect';
+                    this.loading = false;
+                }
+            });
+    }
+}
+
+
 

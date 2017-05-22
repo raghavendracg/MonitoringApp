@@ -25,12 +25,12 @@ ngOnInit() {
   this.options = {
       chart: {
         type: 'pieChart',
-        height: 250,
+        height: 350,
         margin : {
-          top: 15,
+          top: 5,
           right: 15,
-          bottom: 40,
-          left: 45
+          bottom: 5,
+          left: 0
         },
         x: function(d) { return d.key; },
         y: function(d) { return d.doc_count; },
@@ -39,7 +39,7 @@ ngOnInit() {
         labelThreshold: 0.05,  //Configure the minimum slice size for labels to show up
         labelType: 'percent', // Can be "key", "value" or "percent"
         donut: true,          //Turn on Donut mode. Makes pie chart look tasty!
-        donutRatio: 0.50, //Configure how big you want the donut hole size to be.
+        donutRatio: 0.35, //Configure how big you want the donut hole size to be.
         valueFormat: function(d){
           return d3.format(',.4d')(d);
         },
