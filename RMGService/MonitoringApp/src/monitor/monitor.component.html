@@ -1,6 +1,7 @@
 <div class="home jumbotron centered">
   <div class="container">   
-   
+    <!-- HERE: added this error message -->
+    <section *ngIf="errorMessage"> {{errorMessage}} </section>
       <div class="row form-group" *ngIf="_monitorModel != undefined">
         <div class="col-xs-6">
            <label class="col-xs-3 control-label">Frequency :</label> 

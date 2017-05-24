@@ -38,8 +38,8 @@ ngOnInit() {
         showLabels: true,     //Display pie labels
         labelThreshold: 0.05,  //Configure the minimum slice size for labels to show up
         labelType: 'percent', // Can be "key", "value" or "percent"
-        donut: true,          //Turn on Donut mode. Makes pie chart look tasty!
-        donutRatio: 0.35, //Configure how big you want the donut hole size to be.
+        //donut: true,          //Turn on Donut mode. Makes pie chart look tasty!
+        //donutRatio: 0.35, //Configure how big you want the donut hole size to be.
         valueFormat: function(d){
           return d3.format(',.4d')(d);
         },

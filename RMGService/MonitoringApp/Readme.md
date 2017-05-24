@@ -10,11 +10,12 @@ This project is licensed under the ISC license. See the [LICENSE](LICENSE) file 
 
 # Dev Setup
  1-git clone directory from below path.
-    https://github.com/MAPARAB/MonitoringApp
- 2-open command line and navigate to root folder
+    https://stash.capgeminidigital.com/projects/RMG/repos/api-monitoring-app/browse/apimonitoring.git
+ 2-open command line and navigate to `MonitoringAPP` folder
  2-execute 'npm install' command
  3- after npm packages installed execute 'npm start' command. 
- This will create a virtual "build" folder that will be livereloaded at your localhost address.
+ This will create a virtual "dist" folder that will be livereloaded at your localhost address.
+ 4- open browser and put url `http://localhost:3000`.
 
 #Prod Setup
  execute 'npm run build'."This will create a physical "build" folder version than can be sent to a webserver. The dist folder is 7.8MB but only 234KB is actually required to load the page in a web browser.

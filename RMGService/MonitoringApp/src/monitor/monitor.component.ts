@@ -35,8 +35,9 @@ export class MonitorComponent implements OnInit, OnDestroy  {
   //passing real time data.
   private param : string;
   private errorMessage : any;
+  isLoading: boolean = true;
   constructor(private _monitorService: MonitorService) {
-    this.param = '{"days":"10"}';
+    this.param = '{"days":"1"}';
     this.results = [];
     this.successData = [];
     this.failedDated = [];
@@ -95,11 +96,11 @@ export class MonitorComponent implements OnInit, OnDestroy  {
 
   serviceCall() {
     this._monitorService.getmonitoringData(this.param).subscribe(model => {
-      console.log(model);
       this.getFormattedResult(model);
       this._monitorModel = model;
     },
-      error => this.errorMessage = error);
+      error => this.errorMessage = error, // *error path.
+       () => this.isLoading = false); // * onCompleted.
     }
 
   public ngOnDestroy(): void {
