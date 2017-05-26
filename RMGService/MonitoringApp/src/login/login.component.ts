@@ -29,7 +29,7 @@ export class LoginComponent implements OnInit {
             .subscribe(result => {
                 if (result === true) {
                     this.router.navigate(['monitor']);
-                } else {                     
+                } else {
                     this.error = 'Username or password is incorrect';
                     this.loading = false;
                 }

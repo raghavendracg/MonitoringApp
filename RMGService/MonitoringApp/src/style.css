@@ -5,16 +5,10 @@
 .panel-default > .panel-heading {
   color: #000;
   background-color: #57bef2;
-  border-color: #ddd;
   padding: 4px 12px 4px;
   font-size: 12.025px;
   font-family: Arial, Helvetica, sans-serif;
 }
-.panel-chart {
-  padding: 4px 12px 4px;
-  font-size: 12.025px;
-}
-
 .badge {
   padding: 4px 12px 4px;
   font-size: 12.025px;

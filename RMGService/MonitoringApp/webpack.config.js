@@ -31,7 +31,8 @@ module.exports = {
       '@angular/http',
       // RxJS
       'rxjs',
-      // Other     
+      // Other
+      'jquery',     
       'bootstrap',
       'd3',
       'nvd3',
@@ -56,6 +57,7 @@ module.exports = {
     root: __dirname,
     extensions: ['','.ts','.js','.json','.css','.html' ],
     alias: {
+      jquery: path.join(__dirname, '/node_modules/jquery/src/jquery'),
       main: path.join(__dirname, '/src/style.css'),
       bourbon: path.join(__dirname, '/node_modules/bootstrap/dist/css/bootstrap.css')
     }
@@ -119,7 +121,7 @@ module.exports = {
         screw_ie8: true
       } }),
     new ExtractTextPlugin('[name].css'),
-    new webpack.ProvidePlugin({'window.jQuery': 'jquery'}),
+    new webpack.ProvidePlugin({$: "jquery", jQuery: "jquery"}),
     new webpack.ProvidePlugin({	nv: 'nvd3' }),
     new webpack.DefinePlugin({'process.env': { 'ENV': JSON.stringify(ENV) } })    
   ],

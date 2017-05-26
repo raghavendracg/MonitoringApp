@@ -12,12 +12,12 @@ export class AuthenticationService {
     constructor(private http: Http) {
         // set token if saved in local storage
         var currentUser = JSON.parse(localStorage.getItem('currentUser'));
-        this.token = currentUser && currentUser.token;      
+        this.token = currentUser && currentUser.token;
     }
 
     login(username: string, password: string): Observable<boolean> {
         this.headers = new Headers();
-        this.headers.append("Content-Type", "application/json");
+        this.headers.append('Content-Type', 'application/json');
         return this.http.post('http://localhost:8080/login', JSON.stringify({ username: username, password: password }),
          {headers : this.headers})
             .map((response: Response) => {

@@ -2,22 +2,23 @@
   <div class="container">   
     <!-- HERE: added this error message -->
     <section *ngIf="errorMessage"> {{errorMessage}} </section>
-      <div class="row form-group" *ngIf="_monitorModel != undefined">
-        <div class="col-xs-6">
-           <label class="col-xs-3 control-label">Frequency :</label> 
-           <select class="selectpicker"  type="string" [(ngModel)]="param" (ngModelChange)="changeInSelect()">
-            <option class="dropdown-item" *ngFor="let master of masterData" value= {{master.name}}>
-              {{master.id}}
-            </option>
-        </select>         
-       </div> 
-      <div class="col-xs-6">
+    <div class="row" *ngIf="_monitorModel != undefined">
+      <div class="col-xs-2">      
+        <label class="col-sm-2 col-form-label">Frequency</label>
+      </div>
+      <div class="col-xs-2"> 
+        <select class="form-control input-md"  type="string" [(ngModel)]="param" (ngModelChange)="changeInSelect()">
+          <option class="dropdown-item" *ngFor="let master of masterData" value= {{master.name}}>
+            {{master.id}}
+          </option>
+        </select> 
+      </div>     
+      <div class="col-xs-3">
         <span class="badge badge-success">Total : {{_monitorModel.hits.total}}</span>           
         <span class="badge badge-warning"> UpperBound : {{_monitorModel.aggregations.words.doc_count_error_upper_bound}}</span>
       </div>  
-    </div> 
-   
-  <div class="row form-group" *ngIf="_monitorModel != undefined">
+    </div>   
+    <div class="row" *ngIf="_monitorModel != undefined">
       <div *ngFor="let bucket of _monitorModel.aggregations.words.buckets;">          
           <div class="col-lg-2 col-md-2">
             <div class="Panel panel-default panel-heading"> 
@@ -38,7 +39,7 @@
       </div>
     </div> 
  
-    <div class="row form-group" *ngIf="_monitorModel != undefined">
+    <div class="row" *ngIf="_monitorModel != undefined">
       <div class="col-lg-6 col-md-6">
         <div class="Panel panel-default panel-heading"> 
           <div class="panel-heading">

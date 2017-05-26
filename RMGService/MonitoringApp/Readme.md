@@ -9,8 +9,8 @@
 This project is licensed under the ISC license. See the [LICENSE](LICENSE) file for more info.
 
 # Dev Setup
- 1-git clone directory from below path.
-    https://stash.capgeminidigital.com/projects/RMG/repos/api-monitoring-app/browse/apimonitoring.git
+ 1-git clone directory from  path.
+    https://github.com/ramsingh83/MonitoringApp.git
  2-open command line and navigate to `MonitoringAPP` folder
  2-execute 'npm install' command
  3- after npm packages installed execute 'npm start' command. 

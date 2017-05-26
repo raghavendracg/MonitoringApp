@@ -30,12 +30,12 @@ export class MonitorComponent implements OnInit, OnDestroy  {
      new MasterDataModel('1 Day', '{"days":"1"}'),
      new MasterDataModel('10 Days', '{"days":"10"}')
   ];
+  isLoading: boolean = true;
   private subscription: Subscription = new Subscription();
   private _monitorModel : MonitorModel;
   //passing real time data.
   private param : string;
   private errorMessage : any;
-  isLoading: boolean = true;
   constructor(private _monitorService: MonitorService) {
     this.param = '{"days":"1"}';
     this.results = [];
@@ -48,7 +48,6 @@ export class MonitorComponent implements OnInit, OnDestroy  {
   }
 
   ngOnChanges(changes: SimpleChanges) { }
-  
   changeInSelect() {
    this.serviceCall();
   // this.getFormattedResult();
@@ -60,9 +59,7 @@ export class MonitorComponent implements OnInit, OnDestroy  {
      this.successData = [];
      this.failedDated = [];
      let counter = 0;
-   
-
-    for (let code = 0; code < model.aggregations.words.buckets.length; code++) {
+     for (let code = 0; code < model.aggregations.words.buckets.length; code++) {
       if (model.aggregations.words.buckets[code].responsecodes.buckets.length === 1) {
         this.results[counter] = <ResponseCollection> {
           name: model.aggregations.words.buckets[code].key,
@@ -70,8 +67,7 @@ export class MonitorComponent implements OnInit, OnDestroy  {
           count: model.aggregations.words.buckets[code].responsecodes.buckets[0].doc_count
         };
         counter++;
-      }
-      else {
+      } else {
         for (let x = 0; x < model.aggregations.words.buckets[code].responsecodes.buckets.length; x++) {
            this.results[counter] = <ResponseCollection> {
            name: model.aggregations.words.buckets[code].key,
@@ -82,18 +78,19 @@ export class MonitorComponent implements OnInit, OnDestroy  {
         }
       }
     }
-    console.log ('FormattedResult*=>', this.results);
     for (let res of this.results){
       if (res.status === '200') {
         this.successData.push (<Bucket2> { key: res.name , doc_count: res.count });
-      }
-      else {
+      } else {
         this.failedDated.push (<Bucket2> {key: res.name , doc_count: res.count});
       }
     }
   }
 }
 
+serviceHandler() {
+   Observable.interval(180000).map(x => this.serviceCall());
+}
   serviceCall() {
     this._monitorService.getmonitoringData(this.param).subscribe(model => {
       this.getFormattedResult(model);
@@ -106,10 +103,4 @@ export class MonitorComponent implements OnInit, OnDestroy  {
   public ngOnDestroy(): void {
     this.subscription.unsubscribe();
   }
-
-  /*logout() {
-    localStorage.removeItem('id_token');
-    this.router.navigate(['login']);
-  }*/
 }
-

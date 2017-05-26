@@ -16,15 +16,13 @@ export class MonitorService {
       this.params = null;
   }
   public  getmonitoringData(params : string ): Observable<MonitorModel> {
-
-      this.headers = new Headers();
-      this.headers.append('Accept', 'application/json');
-      this.headers.append('Content-Type', 'application/json');
-      this.headers.append("token" , JSON.parse(localStorage.getItem('currentUser')).token);
-      
-      return this._http.post(this.endpoint, params, { headers : this.headers } )
-             .map((response : Response) => <MonitorModel>response.json());
-  }
+    this.headers = new Headers();
+    this.headers.append('Accept', 'application/json');
+    this.headers.append('Content-Type', 'application/json');
+    this.headers.append('token' , JSON.parse(localStorage.getItem('currentUser')).token);
+      return this._http.post(this.endpoint, params, { headers : this.headers })
+      .map((response : Response) => <MonitorModel>response.json());
+    }
 
   private handleError(error : Response) {
     return Observable.throw( error.json().error || 'Server Error');
