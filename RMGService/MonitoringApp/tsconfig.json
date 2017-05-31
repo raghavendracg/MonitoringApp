@@ -9,8 +9,10 @@
   },
   "files": [
     "typings/tsd.d.ts",  
-    "src/app.ts",    
+    "src/app.ts",
+    "src/pipes/index.ts",   
     "src/monitor/index.ts",
+    "src/service/index.ts",
     "src/dashboard/index.ts",
     "src/index.ts"   
   ],

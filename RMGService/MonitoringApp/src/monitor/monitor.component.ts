@@ -4,6 +4,7 @@ import { Http, Response, Headers } from '@angular/http';
 import 'rxjs/add/operator/map';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
+import { MessengerService } from '../service/messengerService';
 
 import {MonitorService} from '../service/monitor.service';
 import {MonitorModel, Bucket2} from '../model/MonitorModel';
@@ -31,29 +32,42 @@ export class MonitorComponent implements OnInit, OnDestroy  {
      new MasterDataModel('10 Days', '{"days":"10"}')
   ];
   isLoading: boolean = true;
+  message: any;
+  messageSubscription: Subscription;
   private subscription: Subscription = new Subscription();
   private _monitorModel : MonitorModel;
   //passing real time data.
   private param : string;
   private errorMessage : any;
-  constructor(private _monitorService: MonitorService) {
-    this.param = '{"days":"1"}';
+  constructor(private _monitorService: MonitorService, private messageService: MessengerService) {
+    this.message = '{"days":"10"}';
+    this.messageSubscription = this.messageService.getMessage().subscribe(message => {
+    console.log('data from messenger service', this.message);
+    this.message = message.value; });
+    this.param = '{"days":"10"}';
     this.results = [];
     this.successData = [];
     this.failedDated = [];
   }
+ngOnInit(): void {
+  this.serviceCall();
+}
 
-  ngOnInit(): void {
-    this.subscription.add(this.serviceCall());
+ngOnChanges(changes: SimpleChanges) {
+}
+
+ ngDoCheck() {
+  if (this.param !== this.message) {
+    this.param = this.message;
+    this.serviceCall();
   }
+}
 
-  ngOnChanges(changes: SimpleChanges) { }
-  changeInSelect() {
+changeInSelect() {
    this.serviceCall();
-  // this.getFormattedResult();
   }
 
-  getFormattedResult(model: MonitorModel) {
+getFormattedResult(model: MonitorModel) {
     if (model !== undefined) {
      this.results = [];
      this.successData = [];
@@ -88,19 +102,17 @@ export class MonitorComponent implements OnInit, OnDestroy  {
   }
 }
 
-serviceHandler() {
-   Observable.interval(180000).map(x => this.serviceCall());
-}
-  serviceCall() {
+serviceCall() {
     this._monitorService.getmonitoringData(this.param).subscribe(model => {
       this.getFormattedResult(model);
       this._monitorModel = model;
     },
       error => this.errorMessage = error, // *error path.
        () => this.isLoading = false); // * onCompleted.
-    }
+}
 
-  public ngOnDestroy(): void {
-    this.subscription.unsubscribe();
+public ngOnDestroy(): void {
+  this.messageSubscription.unsubscribe();
+    //this.subscription.unsubscribe();
   }
 }

@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import {MasterDataModel} from './model/MasterDataModel' ;
+import { MessengerService } from './service/messengerService';
 
 const template = require('./app.html');
 
@@ -21,11 +22,16 @@ export class App {
   ];
   private param : string;
   private errorMessage : any;
-  constructor(public router: Router) {
+  constructor(public router: Router, private messageService: MessengerService ) {
     this.param = '{"days":"10"}';
   }
 
-   changeInSelect() {
-   console.log('selected frequency', this.param);
+   changeInSelect(): void {
+    // send message to subscribers via observable subject.
+    this.messageService.sendMessage(this.param);
+  }
+  clearMessage(): void {
+    // clear message.
+    this.messageService.clearMessage();
   }
 }

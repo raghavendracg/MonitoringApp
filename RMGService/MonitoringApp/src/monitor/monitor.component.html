@@ -3,17 +3,7 @@
     <!-- HERE: added this error message -->
     <section *ngIf="errorMessage"> {{errorMessage}} </section>
     <div class="row" *ngIf="_monitorModel != undefined">
-      <div class="col-xs-2">      
-        <label class="col-sm-2 col-form-label">Frequency</label>
-      </div>
-      <div class="col-xs-2"> 
-        <select class="form-control input-md"  type="string" [(ngModel)]="param" (ngModelChange)="changeInSelect()">
-          <option class="dropdown-item" *ngFor="let master of masterData" value= {{master.name}}>
-            {{master.id}}
-          </option>
-        </select> 
-      </div>     
-      <div class="col-xs-3">
+      <div class="col-xs-12">
         <span class="badge badge-success">Total : {{_monitorModel.hits.total}}</span>           
         <span class="badge badge-warning"> UpperBound : {{_monitorModel.aggregations.words.doc_count_error_upper_bound}}</span>
       </div>  
