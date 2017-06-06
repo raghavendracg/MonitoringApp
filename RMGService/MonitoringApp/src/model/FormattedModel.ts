@@ -1,5 +1,11 @@
- export interface ResponseCollection {
-    name: string;
-    status: string;
-    count: number;
-  }
+export interface ModelResult {
+  vendor: string;
+  successCount: number;
+  failedCount: number;
+}
+
+export interface StatusResult {
+  vendor: string;
+  count: number;
+}
+

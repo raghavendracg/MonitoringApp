@@ -4,12 +4,11 @@ import { Http, Response, Headers } from '@angular/http';
 import 'rxjs/add/operator/map';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
-import { MessengerService } from '../service/messengerService';
 
-import {MonitorService} from '../service/monitor.service';
-import {MonitorModel, Bucket2} from '../model/MonitorModel';
-import {MasterDataModel} from '../model/MasterDataModel' ;
-import {ResponseCollection} from '../model/FormattedModel';
+import { MessengerService } from '../service/messengerService';
+import { MonitorService } from '../service/monitor.service';
+import { MonitorModel } from '../model/MonitorModel';
+import { ModelResult } from '../model/FormattedModel';
 
 @Component({
   selector: 'app-monitor',
@@ -18,101 +17,83 @@ import {ResponseCollection} from '../model/FormattedModel';
   styleUrls: ['./src/monitor/monitor.component.css']
 })
 
-export class MonitorComponent implements OnInit, OnDestroy  {
- results : ResponseCollection[];
- successData : Bucket2[];
- failedDated : Bucket2[];
-
-  masterData = [
-     new MasterDataModel('5 Mins', '{"minutes":"5"}'),
-     new MasterDataModel('15 Mins', '{"minutes":"15"}'),
-     new MasterDataModel('1 Hour', '{"hours":"1"}'),
-     new MasterDataModel('5 Hours', '{"hours":"5"}'),
-     new MasterDataModel('1 Day', '{"days":"1"}'),
-     new MasterDataModel('10 Days', '{"days":"10"}')
-  ];
+export class MonitorComponent implements OnInit, OnDestroy {
+  modelResult: ModelResult[];
   isLoading: boolean = true;
   message: any;
   messageSubscription: Subscription;
   private subscription: Subscription = new Subscription();
-  private _monitorModel : MonitorModel;
+  private _monitorModel: MonitorModel;
   //passing real time data.
-  private param : string;
-  private errorMessage : any;
+  private param: string;
+  private errorMessage: any;
   constructor(private _monitorService: MonitorService, private messageService: MessengerService) {
-    this.message = '{"days":"10"}';
+    this.message = '{"minutes":"3"}';
     this.messageSubscription = this.messageService.getMessage().subscribe(message => {
-    console.log('data from messenger service', this.message);
-    this.message = message.value; });
-    this.param = '{"days":"10"}';
-    this.results = [];
-    this.successData = [];
-    this.failedDated = [];
+      this.message = message.value;
+    });
+    this.param = '{"minutes":"3"}';
+    this.modelResult = [];
   }
-ngOnInit(): void {
-  this.serviceCall();
-}
-
-ngOnChanges(changes: SimpleChanges) {
-}
-
- ngDoCheck() {
-  if (this.param !== this.message) {
-    this.param = this.message;
-    this.serviceCall();
-  }
-}
-
-changeInSelect() {
-   this.serviceCall();
+  ngOnInit(): void {
+    Observable.interval(1000 * 12).subscribe(x => { this.serviceCall(); });
+    //setInterval(function(){ this.serviceCall();}, 120000);
   }
 
-getFormattedResult(model: MonitorModel) {
-    if (model !== undefined) {
-     this.results = [];
-     this.successData = [];
-     this.failedDated = [];
-     let counter = 0;
-     for (let code = 0; code < model.aggregations.words.buckets.length; code++) {
-      if (model.aggregations.words.buckets[code].responsecodes.buckets.length === 1) {
-        this.results[counter] = <ResponseCollection> {
-          name: model.aggregations.words.buckets[code].key,
-          status:  model.aggregations.words.buckets[code].responsecodes.buckets[0].key,
-          count: model.aggregations.words.buckets[code].responsecodes.buckets[0].doc_count
-        };
-        counter++;
-      } else {
-        for (let x = 0; x < model.aggregations.words.buckets[code].responsecodes.buckets.length; x++) {
-           this.results[counter] = <ResponseCollection> {
-           name: model.aggregations.words.buckets[code].key,
-           status:  model.aggregations.words.buckets[code].responsecodes.buckets[x].key,
-           count: model.aggregations.words.buckets[code].responsecodes.buckets[x].doc_count
-          };
-          counter++;
+  ngOnChanges(changes: SimpleChanges) {
+  }
+
+  ngDoCheck() {
+    if (this.param !== this.message) {
+      this.param = this.message;
+    }
+  }
+
+  getFormattedResult(model: MonitorModel) {
+    if (model) {
+      this.modelResult = [];
+      let x : number = 100;
+      for (let code = 0; code < model.Result.length; code++) {
+        if (model.Result[code]) {
+          x = this.isVendorExist(this.modelResult, model.Result[code].Vendor);
+            if (x !== 100) {
+              this.modelResult[x].failedCount = model.Result[code].api.hits.total;
+            } else {
+              this.modelResult.push(<ModelResult>{
+                vendor: model.Result[code].Vendor,
+                successCount: model.Result[code].api.hits.total,
+                failedCount: 0
+              });
+            }
         }
       }
     }
-    for (let res of this.results){
-      if (res.status === '200') {
-        this.successData.push (<Bucket2> { key: res.name , doc_count: res.count });
-      } else {
-        this.failedDated.push (<Bucket2> {key: res.name , doc_count: res.count});
+  }
+
+  isVendorExist(arr: ModelResult[], vendor: string) : number {
+    let index: number = 100;
+    if (arr.length > 0) {
+      for (let j = 0; j < arr.length; j++) {
+        if (arr[j].vendor.toLocaleLowerCase() === vendor.toLocaleLowerCase()) {
+          index = j;
+          return index;
+        }
       }
     }
+    return index;
   }
-}
 
-serviceCall() {
+  serviceCall() {
     this._monitorService.getmonitoringData(this.param).subscribe(model => {
-      this.getFormattedResult(model);
       this._monitorModel = model;
+      this.getFormattedResult(this._monitorModel);
     },
       error => this.errorMessage = error, // *error path.
-       () => this.isLoading = false); // * onCompleted.
-}
+      () => this.isLoading = false); // * onCompleted.
+  }
 
-public ngOnDestroy(): void {
-  this.messageSubscription.unsubscribe();
+  public ngOnDestroy(): void {
+    this.messageSubscription.unsubscribe();
     //this.subscription.unsubscribe();
   }
 }

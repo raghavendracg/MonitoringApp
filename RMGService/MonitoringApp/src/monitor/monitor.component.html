@@ -2,35 +2,34 @@
   <div class="container">   
     <!-- HERE: added this error message -->
     <section *ngIf="errorMessage"> {{errorMessage}} </section>
-    <div class="row" *ngIf="_monitorModel != undefined">
-      <div class="col-xs-12">
-        <span class="badge badge-success">Total : {{_monitorModel.hits.total}}</span>           
-        <span class="badge badge-warning"> UpperBound : {{_monitorModel.aggregations.words.doc_count_error_upper_bound}}</span>
-      </div>  
-    </div>   
-    <div class="row" *ngIf="_monitorModel != undefined">
-      <div *ngFor="let bucket of _monitorModel.aggregations.words.buckets;">          
+    <div class="row" *ngIf="_monitorModel">
+      <div *ngFor="let res of modelResult;">        
+        <div *ngIf=" res != null">          
           <div class="col-lg-2 col-md-2">
             <div class="Panel panel-default panel-heading"> 
               <div class="panel-heading">
                 <div class="row">
-                  <div class="col-xs-1 text center"> {{ bucket.key | unKnownKey }} </div>
+                  <div class="col-xs-1 text center"> {{ res.vendor}} 
+                    <a routerLink="/vendordetails" routerLinkActive="active"><i class="fa fa-cog" ></i></a>
+                  </div>
                 </div>
               </div> 
               <div class="panel-footer">
-                <span>{{bucket.doc_count}}</span> 
-                 <div *ngFor="let buck of bucket.responsecodes.buckets">
-                   <label [ngClass]="(buck.key == 200)? 'label label-success': 'label label-danger'">count: {{buck.doc_count}}</label>
-                 </div>               
+                <span>Total:{{ res.successCount }}</span> 
+                 <div>
+                  <!-- <label class="label label-success"> success: {{ res.successCount }} </label>
+                   <label class="label label-danger">fail: {{ res.failedCount }}</label>-->
+                 </div>                
                 <div class="clearfix"></div>
               </div>
             </div>
           </div>
+        </div>
       </div>
     </div> 
  
-    <div class="row" *ngIf="_monitorModel != undefined">
-      <div class="col-lg-6 col-md-6">
+    <div class="row">
+      <div class="col-lg-6 col-md-6" *ngIf="modelResult.length > 0 && _monitorModel">
         <div class="Panel panel-default panel-heading"> 
           <div class="panel-heading">
             <div class="row">
@@ -38,12 +37,12 @@
             </div>
           </div> 
           <div class="panel-footer">
-            <app-chart [bucketCollection]="successData"></app-chart>                           
+            <app-chart [chartData]="modelResult"></app-chart>                           
               <div class="clearfix"></div>
           </div>
         </div>
       </div> 
-       <div class="col-lg-6 col-md-6">
+       <div class="col-lg-6 col-md-6" *ngIf="modelResult.length > 0 && _monitorModel">
         <div class="Panel panel-default panel-heading"> 
           <div class="panel-heading">
             <div class="row">
@@ -51,7 +50,7 @@
             </div>
           </div> 
           <div class="panel-footer">
-            <app-chart [bucketCollection]="failedDated"></app-chart>                           
+            <app-chart [chartData]="modelResult"></app-chart>                           
               <div class="clearfix"></div>
           </div>
         </div>

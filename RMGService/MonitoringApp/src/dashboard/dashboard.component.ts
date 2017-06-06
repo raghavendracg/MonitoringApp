@@ -1,7 +1,9 @@
-import {Component, OnChanges, OnInit, AfterViewInit,
-  Input, ViewChild, SimpleChanges} from '@angular/core';
-import {Bucket, Bucket2} from '../model/MonitorModel';
-import {nvD3} from 'ng2-nvd3';
+import {
+  Component, OnChanges, OnInit, AfterViewInit,
+  Input, ViewChild, SimpleChanges
+} from '@angular/core';
+import { StatusResult } from '../model/FormattedModel';
+import { nvD3 } from 'ng2-nvd3';
 declare let d3: any;
 
 @Component({
@@ -13,33 +15,34 @@ declare let d3: any;
 export class Dashboard implements OnInit, OnChanges, AfterViewInit {
   options;
   data;
-  @Input() bucketCollection: Bucket2[];
+  @Input() chartData: StatusResult[];
 
-  responseCodes : Bucket2[];
+  responseCodes: StatusResult[];
   @ViewChild(nvD3)
   nvD3: nvD3;
 
-  constructor() {  }
-ngOnInit() {
-  this.options = {
+  constructor() { }
+  ngOnInit() {
+    this.options = {
       chart: {
         type: 'pieChart',
-        height: 350,
-        margin : {
+        height: 400,
+        margin: {
           top: 5,
-          right: 15,
+          right: 35,
           bottom: 5,
           left: 0
         },
-        x: function(d) { return d.key; },
-        y: function(d) { return d.doc_count; },
+        position: 'relative',
+        x: function (d) { return d.vendor; },
+        y: function (d) { return d.successCount; },
         showValues: true,
         showLabels: true,     //Display pie labels
-        labelThreshold: 0.05,  //Configure the minimum slice size for labels to show up
+        labelThreshold: 0.01,  //Configure the minimum slice size for labels to show up
         labelType: 'percent', // Can be "key", "value" or "percent"
         donut: true,          //Turn on Donut mode. Makes pie chart look tasty!
         donutRatio: 0.35, //Configure how big you want the donut hole size to be.
-        valueFormat: function(d){
+        valueFormat: function (d) {
           return d3.format(',.4d')(d);
         },
         duration: 300,
@@ -56,13 +59,13 @@ ngOnInit() {
 
   ngOnChanges(changes: SimpleChanges) {
     // only run when property "data" changed.
-    if (changes['bucketCollection']) {
-      this.responseCodes = this.bucketCollection;
+    if (changes['chartData']) {
+      this.responseCodes = this.chartData;
     }
   }
 
   ngAfterViewInit() {
     //  to update the chart .
-   // this.nvD3.chart.update();   
+    // this.nvD3.chart.update();   
   }
 }

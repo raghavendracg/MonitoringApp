@@ -9,13 +9,13 @@ import {MonitorModel} from '../model/MonitorModel';
 export class MonitorService {
   private endpoint : string;
   private params : string;
-    private headers: Headers;
+  private headers: Headers;
 
   constructor(private _http: Http) {
       this.endpoint = 'http://localhost:8080/api/v1/report';
       this.params = null;
   }
-  public  getmonitoringData(params : string ): Observable<MonitorModel> {
+  public  getmonitoringData(params : string): Observable<MonitorModel> {
     this.headers = new Headers();
     this.headers.append('Accept', 'application/json');
     this.headers.append('Content-Type', 'application/json');
