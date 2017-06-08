@@ -37,7 +37,9 @@ table caption {
   padding-top: 140px;
   font-size: 12px;
 }
-
+.svg {
+    display: block;
+}
 .nvd3 text {
   font: normal 12px Arial !important;
 }

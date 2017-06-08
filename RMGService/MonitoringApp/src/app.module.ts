@@ -11,6 +11,7 @@ import { MonitorComponent } from './monitor/monitor.component';
 import { LoginComponent } from './login/login.component';
 import { Dashboard } from './dashboard/dashboard.component';
 import { BarChartMonitor } from './dashboard/barchart.component';
+import { TimerComponent } from './dashboard/timer.component';
 import { App } from './app';
 import { UnKnownKey } from './pipes/unknown';
 
@@ -19,7 +20,8 @@ import { routes } from './app.routes';
 
 @NgModule({
   bootstrap: [App],
-  declarations: [ LoginComponent, MonitorComponent, Dashboard, BarChartMonitor, UnKnownKey, nvD3, App ],
+  declarations: [ LoginComponent, MonitorComponent, Dashboard, BarChartMonitor,
+    UnKnownKey, nvD3, App, TimerComponent],
   exports: [nvD3],
   providers: [AuthGuard, MessengerService],
   imports: [HttpModule, BrowserModule, FormsModule,

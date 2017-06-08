@@ -26,16 +26,11 @@ export class BarChartMonitor {
             chart: {
                 type: 'multiBarHorizontalChart',
                 height: 350,
-                margin: {
-                    top: 30,
-                    right: 30,
-                    bottom: 40,
-                    left: 75
-                },
                 position: 'relative',
                 x: function (d) { return d.vendor; },
                 y: function (d) { return d.count; },
                 showControls: true,
+                controlsPosition: 'bottom',
                 showValues: false,
                 tooltips: true,
                 transitionDuration: 300,
