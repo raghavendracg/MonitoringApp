@@ -4,55 +4,51 @@
 
 .panel-default > .panel-heading {
   color: #000;
-  background-color: #57bef2;
+  background-color: #82CAFA;
   padding: 4px 12px 4px;
-  font-size: 12.025px;
+  font-size: 13.025px;
   font-family: Arial, Helvetica, sans-serif;
 }
-.badge {
-  padding: 4px 12px 4px;
+
+table {
+  font-family: Arial;
   font-size: 12.025px;
-  font-weight: bold;
-  white-space: nowrap;
-  color: #ffffff;
-  background-color: #999999;
-  -webkit-border-radius: 9px;
-  -moz-border-radius: 9px;
-  border-radius: 9px;
-}
-.badge:hover {
-  color: #ffffff;
-  text-decoration: none;
-  cursor: pointer;
-}
-.badge-error {
-  background-color: #b94a48;
-}
-.badge-error:hover {
-  background-color: #953b39;
-}
-.badge-warning {
-  background-color: #f89406;
-}
-.badge-warning:hover {
-  background-color: #c67605;
-}
-.badge-success {
-  background-color: #468847;
-}
-.badge-success:hover {
-  background-color: #356635;
-}
-.badge-info {
-  background-color: #3a87ad;
-}
-.badge-info:hover {
-  background-color: #2d6987;
-}
-.badge-inverse {
-  background-color: #333333;
-}
-.badge-inverse:hover {
-  background-color: #1a1a1a;
 }
 
+thead {
+  font-family: Arial;
+  font-size: 12.025px;
+  font-weight: bold;
+  background-color: orange;
+}
+
+table caption {
+	padding: .5em 0;
+}
+
+@media screen and (max-width: 767px) {
+  table caption {
+    border-bottom: 1px solid #ddd;
+  }
+}
+
+.p {
+  text-align: center;
+  padding-top: 140px;
+  font-size: 12px;
+}
+
+.nvd3 text {
+  font: normal 12px Arial !important;
+}
+.nvd3 .title {
+  font: normal 12px Arial !important;
+}
+.nvtooltip {
+  font-family: Arial, Helvetica, sans-serif !important;
+  background-color: transparent !important;
+}
+
+.nv-bars rect {
+  width: 5px;
+}

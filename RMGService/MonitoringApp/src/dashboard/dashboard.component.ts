@@ -2,7 +2,7 @@ import {
   Component, OnChanges, OnInit, AfterViewInit,
   Input, ViewChild, SimpleChanges
 } from '@angular/core';
-import { StatusResult } from '../model/FormattedModel';
+import { ModelResult } from '../model/FormattedModel';
 import { nvD3 } from 'ng2-nvd3';
 declare let d3: any;
 
@@ -15,9 +15,8 @@ declare let d3: any;
 export class Dashboard implements OnInit, OnChanges, AfterViewInit {
   options;
   data;
-  @Input() chartData: StatusResult[];
-
-  responseCodes: StatusResult[];
+  @Input() chartData: ModelResult[];
+  responseCodes: ModelResult[];
   @ViewChild(nvD3)
   nvD3: nvD3;
 
@@ -26,7 +25,7 @@ export class Dashboard implements OnInit, OnChanges, AfterViewInit {
     this.options = {
       chart: {
         type: 'pieChart',
-        height: 400,
+        height: 300,
         margin: {
           top: 5,
           right: 35,
@@ -38,7 +37,7 @@ export class Dashboard implements OnInit, OnChanges, AfterViewInit {
         y: function (d) { return d.successCount; },
         showValues: true,
         showLabels: true,     //Display pie labels
-        labelThreshold: 0.01,  //Configure the minimum slice size for labels to show up
+        labelThreshold: 0.001,  //Configure the minimum slice size for labels to show up
         labelType: 'percent', // Can be "key", "value" or "percent"
         donut: true,          //Turn on Donut mode. Makes pie chart look tasty!
         donutRatio: 0.35, //Configure how big you want the donut hole size to be.
@@ -65,7 +64,7 @@ export class Dashboard implements OnInit, OnChanges, AfterViewInit {
   }
 
   ngAfterViewInit() {
-    //  to update the chart .
-    // this.nvD3.chart.update();   
+    //to update the chart .
+    this.nvD3.chart.update();
   }
 }

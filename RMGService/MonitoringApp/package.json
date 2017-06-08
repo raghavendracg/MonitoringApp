@@ -1,21 +1,20 @@
 {
   "name": "MonitoringAPP",
   "version": "0.0.1",
-  "description": "This app is use for monitoring real time data",
+  "description": "This app is use for monitoring real time data of online postage api",
   "main": "",
   "scripts": {
     "server": "cd apiService && npm i && node index.js",
-    "front": "webpack-dev-server --dev --inline -d --colors --display-error-details --display-cached --port 3000",
+    "front": "webpack-dev-server --dev --inline -d --colors --display-error-details --display-cached --port 3000 --host 0.0.0.0",
     "start": "npm run front",
     "build": "rimraf dist && webpack --progress --profile --colors",
     "test": "karma start"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/MAPARAB/MonitoringApp"
+    "url": "https://github.com/ramsingh83/MonitoringApp"
   },
   "contributors": [
-    "Makrand Parab",
     "Ram Singh <ram.c.singh@capgemini.com>"
   ],
   "license": "ISC",

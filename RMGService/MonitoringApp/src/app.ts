@@ -23,7 +23,7 @@ export class App {
   private param : string;
   private errorMessage : any;
   constructor(public router: Router, private messageService: MessengerService ) {
-    this.param = '{"days":"10"}';
+    this.param = '{"minutes":"5"}';
   }
 
    changeInSelect(): void {

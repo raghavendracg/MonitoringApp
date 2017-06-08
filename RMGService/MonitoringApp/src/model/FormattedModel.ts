@@ -9,3 +9,8 @@ export interface StatusResult {
   count: number;
 }
 
+export interface BarChartModel {
+  key: String;
+  color: String;
+  values: StatusResult[];
+}

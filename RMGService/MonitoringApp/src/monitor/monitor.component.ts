@@ -8,23 +8,25 @@ import { Subscription } from 'rxjs/Subscription';
 import { MessengerService } from '../service/messengerService';
 import { MonitorService } from '../service/monitor.service';
 import { MonitorModel } from '../model/MonitorModel';
-import { ModelResult } from '../model/FormattedModel';
+import { ModelResult, StatusResult, BarChartModel } from '../model/FormattedModel';
 
 @Component({
   selector: 'app-monitor',
   providers: [MonitorService],
-  templateUrl: './src/monitor/monitor.component.html',
+  templateUrl: './src/monitor/monitor.component1.html',
   styleUrls: ['./src/monitor/monitor.component.css']
 })
 
 export class MonitorComponent implements OnInit, OnDestroy {
   modelResult: ModelResult[];
+  barchartModel: BarChartModel[];
+  successResult: StatusResult[];
+  failResult: StatusResult[];
   isLoading: boolean = true;
   message: any;
   messageSubscription: Subscription;
   private subscription: Subscription = new Subscription();
   private _monitorModel: MonitorModel;
-  //passing real time data.
   private param: string;
   private errorMessage: any;
   constructor(private _monitorService: MonitorService, private messageService: MessengerService) {
@@ -52,21 +54,43 @@ export class MonitorComponent implements OnInit, OnDestroy {
   getFormattedResult(model: MonitorModel) {
     if (model) {
       this.modelResult = [];
+      this.successResult = [];
+      this.failResult = [];
+      this.barchartModel = [];
       let x : number = 100;
       for (let code = 0; code < model.Result.length; code++) {
         if (model.Result[code]) {
           x = this.isVendorExist(this.modelResult, model.Result[code].Vendor);
             if (x !== 100) {
               this.modelResult[x].failedCount = model.Result[code].api.hits.total;
+              this.failResult.push(<StatusResult>{
+                vendor: model.Result[code].Vendor,
+                count : model.Result[code].api.hits.total
+              });
             } else {
               this.modelResult.push(<ModelResult>{
                 vendor: model.Result[code].Vendor,
                 successCount: model.Result[code].api.hits.total,
                 failedCount: 0
               });
+              this.successResult.push(<StatusResult>{
+                vendor: model.Result[code].Vendor,
+                count : model.Result[code].api.hits.total
+              });
             }
         }
       }
+      // prepare model for barchart.
+      this.barchartModel = [{
+        key: 'S',
+        color: '#1f77b4',
+        values : this.successResult
+      },
+      {
+        key: 'F',
+        color: '#d62728',
+        values: this.failResult
+      }];
     }
   }
 
@@ -92,8 +116,14 @@ export class MonitorComponent implements OnInit, OnDestroy {
       () => this.isLoading = false); // * onCompleted.
   }
 
+  goldCategory(vendor: string) : boolean {
+    if (vendor.toLocaleLowerCase() === 'storefeeder') {
+      return true;
+    } else { return false; }
+  }
+
   public ngOnDestroy(): void {
     this.messageSubscription.unsubscribe();
-    //this.subscription.unsubscribe();
+    this.subscription.unsubscribe();
   }
 }
