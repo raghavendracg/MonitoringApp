@@ -3,15 +3,13 @@ import { Observable, Subscription } from 'rxjs/Rx';
 
 @Component({
     selector: 'timer',
-    template: `<span> Refresh Time - {{(minutesDisplay) &&
-         (minutesDisplay <= 59) ? minutesDisplay : '00'}} : {{(secondsDisplay) &&
-         (secondsDisplay <= 59) ? secondsDisplay : '00'}} <br/></span   >`
+    template: `<span> Refresh Time - {{ (secondsDisplay) }} <br/></span>`
 })
 
 export class TimerComponent implements OnInit {
 
     ticks = 0;
-    refreshConter = 12000;
+    refreshConter = 15;
 
     minutesDisplay: number = 0;
     hoursDisplay: number = 0;
@@ -19,7 +17,7 @@ export class TimerComponent implements OnInit {
 
     sub: Subscription;
 
-    constructor() {}
+    constructor() { }
 
     ngOnInit() {
         this.startTimer();
@@ -37,11 +35,12 @@ export class TimerComponent implements OnInit {
                 this.ticks = t;
 
                 this.secondsDisplay = this.getSeconds(this.refreshConter - this.ticks);
-                this.minutesDisplay = this.getMinutes(this.refreshConter - this.ticks);
-                this.hoursDisplay = this.getHours(this.refreshConter - this.ticks);
-                if (this.secondsDisplay === 0) {
-                    console.log('inside condition');
-                    this.refreshConter = this.refreshConter + this.ticks;
+                // this.minutesDisplay = this.getMinutes(this.refreshConter - this.ticks);
+                //this.hoursDisplay = this.getHours(this.refreshConter - this.ticks);
+                if (this.ticks !== 0) {
+                    if (this.ticks % 15 === 0) {
+                        this.refreshConter = this.refreshConter + 15;
+                    }
                 }
             }
         );

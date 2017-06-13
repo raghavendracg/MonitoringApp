@@ -42,7 +42,7 @@ export class MonitorComponent implements OnInit, OnDestroy {
     this.loading = true;
   }
   ngOnInit(): void {
-    Observable.interval(1000 * 12).subscribe(x => { this.serviceCall(); });
+    Observable.interval(1000 * 15).subscribe(x => { this.serviceCall(); });
   }
 
   ngOnChanges(changes: SimpleChanges) {
