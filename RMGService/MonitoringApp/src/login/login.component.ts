@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { AuthenticationService } from '../service/index';
 
 @Component({
-  selector: 'app-login',
+  selector: 'rmg-login',
   templateUrl: './src/login/login.component.html',
   styleUrls: [ './src/login/login.component.css' ],
   providers: [AuthenticationService]

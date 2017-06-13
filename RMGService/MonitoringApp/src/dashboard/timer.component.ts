@@ -11,6 +11,7 @@ import { Observable, Subscription } from 'rxjs/Rx';
 export class TimerComponent implements OnInit {
 
     ticks = 0;
+    refreshConter = 12000;
 
     minutesDisplay: number = 0;
     hoursDisplay: number = 0;
@@ -35,9 +36,13 @@ export class TimerComponent implements OnInit {
             t => {
                 this.ticks = t;
 
-                this.secondsDisplay = this.getSeconds(this.ticks);
-                this.minutesDisplay = this.getMinutes(this.ticks);
-                this.hoursDisplay = this.getHours(this.ticks);
+                this.secondsDisplay = this.getSeconds(this.refreshConter - this.ticks);
+                this.minutesDisplay = this.getMinutes(this.refreshConter - this.ticks);
+                this.hoursDisplay = this.getHours(this.refreshConter - this.ticks);
+                if (this.secondsDisplay === 0) {
+                    console.log('inside condition');
+                    this.refreshConter = this.refreshConter + this.ticks;
+                }
             }
         );
     }

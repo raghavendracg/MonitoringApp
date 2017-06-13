@@ -9,9 +9,10 @@ import { MessengerService } from '../service/messengerService';
 import { MonitorService } from '../service/monitor.service';
 import { MonitorModel } from '../model/MonitorModel';
 import { ModelResult, StatusResult, BarChartModel } from '../model/FormattedModel';
+import { NavbarService } from '../layout/navbar.service';
 
 @Component({
-  selector: 'app-monitor',
+  selector: 'rmg-monitor',
   providers: [MonitorService],
   templateUrl: './src/monitor/monitor.component1.html',
   styleUrls: ['./src/monitor/monitor.component.css']
@@ -22,24 +23,26 @@ export class MonitorComponent implements OnInit, OnDestroy {
   barchartModel: BarChartModel[];
   successResult: StatusResult[];
   failResult: StatusResult[];
-  isLoading: boolean = true;
+  loading: boolean;
   message: any;
   messageSubscription: Subscription;
   private subscription: Subscription = new Subscription();
   private _monitorModel: MonitorModel;
   private param: string;
   private errorMessage: any;
-  constructor(private _monitorService: MonitorService, private messageService: MessengerService) {
+  constructor(private _monitorService: MonitorService, private messageService: MessengerService,
+   public nav: NavbarService  ) {
     this.message = '{"minutes":"3"}';
+    this.nav.show();
     this.messageSubscription = this.messageService.getMessage().subscribe(message => {
       this.message = message.value;
     });
     this.param = '{"minutes":"3"}';
     this.modelResult = [];
+    this.loading = true;
   }
   ngOnInit(): void {
     Observable.interval(1000 * 12).subscribe(x => { this.serviceCall(); });
-    //setInterval(function(){ this.serviceCall();}, 120000);
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -113,7 +116,7 @@ export class MonitorComponent implements OnInit, OnDestroy {
       this.getFormattedResult(this._monitorModel);
     },
       error => this.errorMessage = error, // *error path.
-      () => this.isLoading = false); // * onCompleted.
+      () => this.loading = false); // * onCompleted.
   }
 
   goldCategory(vendor: string) : boolean {

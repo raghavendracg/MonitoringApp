@@ -7,7 +7,7 @@ import { nvD3 } from 'ng2-nvd3';
 declare let d3: any;
 
 @Component({
-  selector: 'app-chart',
+  selector: 'rmg-piechart',
   entryComponents: [nvD3],
   template: `<div> <nvd3 [options]="options" [data]="responseCodes"></nvd3></div>`
 })
