@@ -10,6 +10,7 @@ var cors = require('cors');
 
 var apiService = require('./service/elastic');
 var auth = require('./authenticate/auth');
+var stubService = require('./stub/apiservice');
 
 // configure app to use bodyParser()
 // this will let us get the data from a POST
@@ -34,7 +35,10 @@ router.get('/home', function (req, res) {
 router.post('/login', auth.authenticate);
 
 //Elastic search query
-router.post('/api/v1/report', apiService.apiAsyncReport);
+//router.post('/api/v1/report', apiService.apiAsyncReport);
+
+// this is for dummy data to come from json file.
+router.post('/api/v1/report', stubService.apiReport);
 
 // more routes for our API will happen here
 
