@@ -26,6 +26,9 @@ this will host the service at port 8080.
 
  # WINDOWS only. In terminal as administrator
   npm install -g node-pre-gyp  
+  npm install -g rxjs@^5.0.1  
+  npm install -g @angular/cli  
+  
    
  3-execute 'npm install' command  
  4- after npm packages installed execute 'npm start' command.  
