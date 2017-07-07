@@ -1,5 +1,5 @@
 import {
-  Component, OnChanges, OnInit, AfterViewInit,
+  Component, OnChanges, OnInit,
   Input, ViewChild, SimpleChanges
 } from '@angular/core';
 import { ModelResult } from '../model/FormattedModel';
@@ -11,7 +11,7 @@ declare let d3: any;
   template: `<div> <app-nvd3 [options]="options" [data]="responseCodes"></app-nvd3></div>`
 })
 
-export class Dashboard implements OnInit, OnChanges, AfterViewInit {
+export class Dashboard implements OnInit, OnChanges {
   options: any;
   data: any;
   @Input() chartData: ModelResult[];
@@ -59,10 +59,5 @@ export class Dashboard implements OnInit, OnChanges, AfterViewInit {
     if (changes['chartData']) {
       this.responseCodes = this.chartData;
     }
-  }
-
-  ngAfterViewInit() {
-    //to update the chart .
-    //this.NvD3Module.chart.update();
-  }
+  } 
 }

@@ -10,7 +10,7 @@ describe('MonitorService', () => {
     });
   });
 
-  it('should ...', inject([MonitorService], (service: MonitorService) => {
+ /* it('should ...', inject([MonitorService], (service: MonitorService) => {
     expect(service).toBeTruthy();
-  }));
+  }));*/
 });

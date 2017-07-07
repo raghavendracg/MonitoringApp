@@ -6,18 +6,16 @@ module.exports = function (config) {
 
     frameworks: ['jasmine'],
 
+    client: {
+      clearContext: false // leave Jasmine Spec Runner output visible in browser
+    },
+
     files: [
-      {pattern: './config/karma-test-shim.js', watched: false}
+      { pattern: './config/karma-test-shim.js', watched: false }
     ],
 
     preprocessors: {
       './config/karma-test-shim.js': ['webpack', 'sourcemap']
-    },
-
-    webpack: webpackConfig,
-
-    webpackMiddleware: {
-      stats: 'errors-only'
     },
 
     webpackServer: {
@@ -28,9 +26,19 @@ module.exports = function (config) {
     port: 8099,
     colors: true,
     logLevel: config.LOG_INFO,
-    autoWatch: false,
+    autoWatch: true,
     browsers: ['Chrome'],
-    singleRun: true
+    singleRun: true,
+    webpack: webpackConfig,
+    webpackMiddleware: {
+      stats: 'errors-only'
+    },
+    reporters: ['progress', 'karma-remap-istanbul'],
+    remapIstanbulReporter: {
+      reports: {
+        html: 'src/test/coverage'
+      }
+    }
   };
 
   config.set(_config);

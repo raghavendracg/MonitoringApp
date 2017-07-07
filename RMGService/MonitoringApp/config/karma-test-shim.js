@@ -18,4 +18,8 @@ appContext.keys().forEach(appContext);
 var testing = require('@angular/core/testing');
 var browser = require('@angular/platform-browser-dynamic/testing');
 
+//jasmine.DEFAULT_TIMEOUT_INTERVAL = 4000;
+
+testing.TestBed.resetTestEnvironment();
+
 testing.TestBed.initTestEnvironment(browser.BrowserDynamicTestingModule, browser.platformBrowserDynamicTesting());

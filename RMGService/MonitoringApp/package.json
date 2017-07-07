@@ -3,12 +3,13 @@
   "version": "1.0.0",
   "private": true,
   "description": "Monitor the status of online Poatage API Status",
-  "scripts": {
-    "test:once": "karma start config/karma.conf.js --single-run",
+  "scripts": {    
     "build": "rimraf dist && webpack --config config/webpack.prod.js --bail",
     "serve": "lite-server -c=bs-config.json",   
     "start": "webpack-dev-server --inline --progress --port 3000",    
-    "test": "karma start karma.webpack.conf.js",
+    "test": "karma start karma.webpack.conf.js ",
+    "coverage":"npm run  test --single-run --code-coverage ,coverage-istanbul",
+    "show-coverage": "npm run test-single && http-server -c-1 -o -p 9875 src/test/coverage",
     "build:watch": "tsc -p src/ -w",    
     "serve:upgrade": "http-server",
     "build:aot": "ngc -p tsconfig-aot.json && rollup -c rollup-config.js",
@@ -109,7 +110,9 @@
     "style-loader": "^0.13.1",
     "webpack": "2.2.1",
     "webpack-dev-server": "2.4.1",
-    "webpack-merge": "^3.0.0"
+    "webpack-merge": "^3.0.0",
+    "karma-remap-istanbul": "^0.2.1",
+    "sourcemap-istanbul-instrumenter-loader": "^0.2.0"
   },
    "peerDependencies": {
     "rxjs": "^5.0.1"
